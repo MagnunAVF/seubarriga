@@ -36,3 +36,14 @@ test('Should NOT insert user WITHOUT email', async () => {
     expect(result.status).toBe(400);
     expect(result.body.error).toBe('Email must be present!');
 });
+
+test('Should NOT insert user WITHOUT password ', (done) => {
+    request(app).post('/users')
+        .send({ name: 'Walter Mitty', mail: 'walter@mail.com' })
+        .then((result) => {
+            expect(result.status).toBe(400);
+            expect(result.body.error).toBe('Password must be present!');
+            done();
+        })
+        .catch(error => done.fails(error));
+});
