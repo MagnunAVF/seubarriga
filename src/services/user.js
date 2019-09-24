@@ -4,6 +4,8 @@ module.exports = (app) => {
     }
 
     const save = (user) => {
+        if (!user.name) return { error: 'Name must be present!' }
+
         return app.db('users').insert(user, '*');
     }
 
