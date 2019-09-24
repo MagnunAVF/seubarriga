@@ -28,3 +28,11 @@ test('Should NOT insert user WITHOUT name', () => {
             expect(res.body.error).toBe('Name must be present!');
         });
 });
+
+test('Should NOT insert user WITHOUT email', async () => {
+    const result = await request(app).post('/users')
+        .send({ name: 'Walter Mitty', passwd: '123456' })
+
+    expect(result.status).toBe(400);
+    expect(result.body.error).toBe('Email must be present!');
+});
