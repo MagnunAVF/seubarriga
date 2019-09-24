@@ -2,6 +2,8 @@ const request = require('supertest');
 
 const app = require('../../src/app');
 
+const mail = `${Date.now()}@mail.com`;
+
 test('Should return all users ', () => {
     return request(app).get('/users')
         .then((res) => {
@@ -11,7 +13,6 @@ test('Should return all users ', () => {
 });
 
 test('Should insert an user with success', () => {
-    const mail = `${Date.now()}@mail.com`;
     return request(app).post('/users')
         .send({ name: 'Walter Mitty', mail, passwd: '123456' })
         .then((res) => {
@@ -46,4 +47,13 @@ test('Should NOT insert user WITHOUT password ', (done) => {
             done();
         })
         .catch(error => done.fails(error));
+});
+
+test('Should NOT insert user with an existing email', () => {
+    return request(app).post('/users')
+        .send({ name: 'Walter Mitty', mail, passwd: '123456' })
+        .then((res) => {
+            expect(res.status).toBe(400);
+            expect(res.body.error).toBe('This user exists in db !');
+        });
 });
