@@ -6,5 +6,10 @@ module.exports = (app) => {
       })
   };
 
-  return { create }
+  const getAll = async (req, res) => {
+    app.services.account.findAll()
+      .then(result => res.status(200).json(result));
+  }
+
+  return { create, getAll }
 }
