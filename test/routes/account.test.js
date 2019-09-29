@@ -38,3 +38,15 @@ test('Should return an account based on ID ', () => {
       expect(res.body.user_id).toBe(user.id);
     })
 });
+
+test('Should update an account based on ID', () => {
+  return app.db('accounts')
+    .insert({ name: 'Account to update', user_id: user.id }, ['id'])
+    .then(acc =>
+      request(app).put(`${MAIN_ROUTE}/${acc[0].id}`)
+      .send({ name: 'Account updated' }))
+    .then((res) => {
+      expect(res.status).toBe(200);
+      expect(res.body.name).toBe('Account updated');
+    })
+});
